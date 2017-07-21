@@ -28,8 +28,7 @@ public class BunnyController : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        //Application.LoadLevel(Application.loadedLevel);
-        SceneManager.LoadScene("Scene1");
-        
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Enemy")) 
+            SceneManager.LoadScene("Scene1");        
     }
 }
