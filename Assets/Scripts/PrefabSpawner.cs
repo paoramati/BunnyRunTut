@@ -8,6 +8,8 @@ public class PrefabSpawner : MonoBehaviour {
     public Transform prefabToSpawn;     //reference to the prefab to be spawned
     public float spawnRate = 1;         //time is sec between spawning prefabs
     public float randomDelay = 1;
+    public AnimationCurve spawnCurve;
+    public float curveLengthInSeconds = 30f;
 
 	// Use this for initialization
 	void Start () {
