@@ -4,30 +4,33 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class BunnyController : MonoBehaviour {
+public class DudeController : MonoBehaviour
+{
 
     private Rigidbody2D myRigidBody;
     private Animator myAnim;
     private Collider2D myCollider;
-    public float bunnyJumpForce = 500f;
-    private float bunnyHurtTime = -1;
+    public float dudeJumpForce = 500f;
+    private float dudeHurtTime = -1;
     public Text scoreText;
     private float startTime;
     private int jumpsLeft = 2;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         myRigidBody = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
         myCollider = GetComponent<Collider2D>();
 
         startTime = Time.time;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
 
-        if (bunnyHurtTime == -1)        
+    // Update is called once per frame
+    void Update()
+    {
+
+        if (dudeHurtTime == -1)
         {
             if (Input.GetButtonUp("Jump") && jumpsLeft > 0)
             {
@@ -36,14 +39,14 @@ public class BunnyController : MonoBehaviour {
                     myRigidBody.velocity = Vector2.zero;
                 }
 
-                //making second jump less powerful so bunny doesn't go off top of screen
-                if (jumpsLeft == 1) 
+                //making second jump less powerful so dude doesn't go off top of screen
+                if (jumpsLeft == 1)
                 {
-                    myRigidBody.AddForce(transform.up * bunnyJumpForce * 0.75f); //if doing second jump, jump has less force
+                    myRigidBody.AddForce(transform.up * dudeJumpForce * 0.75f); //if doing second jump, jump has less force
                 }
                 else
                 {
-                    myRigidBody.AddForce(transform.up * bunnyJumpForce);
+                    myRigidBody.AddForce(transform.up * dudeJumpForce);
                 }
 
                 jumpsLeft--;
@@ -55,19 +58,19 @@ public class BunnyController : MonoBehaviour {
         }
         else
         {
-            if (Time.time > bunnyHurtTime + 2) //i.e. 2 seconds after collision
+            if (Time.time > dudeHurtTime + 2) //i.e. 2 seconds after collision
             {
                 SceneManager.LoadScene("Scene1");
             }
         }
 
-		
-	}
+
+    }
 
     //collision detection method
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Enemy") )
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             foreach (PrefabSpawner spawner in FindObjectsOfType<PrefabSpawner>())  //disables newly spawned enemy from moving after collision
             {
@@ -79,12 +82,12 @@ public class BunnyController : MonoBehaviour {
                 moveLefter.enabled = false;
             }
 
-            bunnyHurtTime = Time.time;
-            myAnim.SetBool("bunnyHurt", true);
+            dudeHurtTime = Time.time;
+            myAnim.SetBool("dudeHurt", true);
             myRigidBody.velocity = Vector2.zero;    //reset object velocity
-            myRigidBody.AddForce(transform.up * bunnyJumpForce);    //make bunny shoot up
+            myRigidBody.AddForce(transform.up * dudeJumpForce);    //make dude shoot up
             myCollider.enabled = false;
-        }  
+        }
         else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             jumpsLeft = 2;

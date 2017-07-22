@@ -11,6 +11,7 @@ public class PrefabSpawner : MonoBehaviour {
     public AnimationCurve spawnCurve;
     public float curveLengthInSeconds = 30f;
     private float startTime;
+    public float jitter = 0.25f;
 
 	// Use this for initialization
 	void Start () {
@@ -32,7 +33,7 @@ public class PrefabSpawner : MonoBehaviour {
                 startTime = Time.time;
             }
 
-            nextSpawn = Time.time + spawnCurve.Evaluate(curvePos);
+            nextSpawn = Time.time + spawnCurve.Evaluate(curvePos) + Random.Range(-jitter, jitter);
         }
 	}
 }
