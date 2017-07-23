@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class DudeController : MonoBehaviour
 {
-
     private Rigidbody2D myRigidBody;
     private Animator myAnim;
     private Collider2D myCollider;
@@ -15,6 +14,8 @@ public class DudeController : MonoBehaviour
     public Text scoreText;
     private float startTime;
     private int jumpsLeft = 2;
+    public AudioSource jumpSfx;
+    public AudioSource deathSfx;
 
     // Use this for initialization
     void Start()
@@ -29,6 +30,11 @@ public class DudeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("Title");
+        }
 
         if (dudeHurtTime == -1)
         {
@@ -50,6 +56,7 @@ public class DudeController : MonoBehaviour
                 }
 
                 jumpsLeft--;
+                jumpSfx.Play();
             }
 
             myAnim.SetFloat("vVelocity", myRigidBody.velocity.y);
@@ -58,9 +65,9 @@ public class DudeController : MonoBehaviour
         }
         else
         {
-            if (Time.time > dudeHurtTime + 2) //i.e. 2 seconds after collision
+            if (Time.time > dudeHurtTime + 3) //i.e. 2 seconds after collision
             {
-                SceneManager.LoadScene("Scene1");
+                SceneManager.LoadScene("Title");
             }
         }
 
@@ -87,6 +94,7 @@ public class DudeController : MonoBehaviour
             myRigidBody.velocity = Vector2.zero;    //reset object velocity
             myRigidBody.AddForce(transform.up * dudeJumpForce);    //make dude shoot up
             myCollider.enabled = false;
+            deathSfx.Play();
         }
         else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
