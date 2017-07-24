@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PrefabSpawner : MonoBehaviour {
 
-    private float nextSpawn = 0;        //holds next point in time for next spawning
-    public Transform prefabToSpawn;     //reference to the prefab to be spawned
-    //public float spawnRate = 1;         //time is sec between spawning prefabs
+    private float nextSpawn = 0;            //holds next point in time for next spawning
+    public Transform prefabToSpawn;         //reference to the prefab to be spawned
+    //public float spawnRate = 1;           //time is sec between spawning prefabs
     //public float randomDelay = 1;
     public AnimationCurve spawnCurve;
     public float curveLengthInSeconds = 30f;
@@ -26,8 +26,8 @@ public class PrefabSpawner : MonoBehaviour {
             //nextSpawn = Time.time + spawnRate + Random.Range(0, randomDelay);
 
             float curvePos = (Time.time - startTime) / curveLengthInSeconds;    //how many secs have passed / 30
-            //if curvePos goes past the edge of the animation curve.
-            if (curvePos > 1f)
+
+            if (curvePos > 1f)              //if curvePos goes past the edge of the animation curve.
             {
                 curvePos = 1f;
                 startTime = Time.time;

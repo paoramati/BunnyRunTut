@@ -38,7 +38,7 @@ public class DudeController : MonoBehaviour
             SceneManager.LoadScene("Title");
         }
 
-        if (dudeHurtTime == -1)
+        if (dudeHurtTime == -1)     //whilst player isn't hurt
         {
             if ((Input.GetButtonUp("Jump") || Input.GetButtonUp("Fire1")) && jumpsLeft > 0)
             {
@@ -57,8 +57,8 @@ public class DudeController : MonoBehaviour
                     myRigidBody.AddForce(transform.up * dudeJumpForce);
                 }
 
-                jumpsLeft--;
-                jumpSfx.Play();
+                jumpsLeft--;        //decrement no# of jumps 
+                jumpSfx.Play();     //play the jump sound
             }
 
             myAnim.SetFloat("vVelocity", myRigidBody.velocity.y);
@@ -69,7 +69,6 @@ public class DudeController : MonoBehaviour
         {
             if (Time.time > dudeHurtTime + 3) //i.e. 2 seconds after collision
             {
-                //SceneManager.UnloadSceneAsync("Game");
                 SceneManager.LoadScene("Title");
             }
         }
@@ -95,7 +94,7 @@ public class DudeController : MonoBehaviour
             myRigidBody.velocity = Vector2.zero;                        //reset object velocity
             myRigidBody.AddForce(transform.up * dudeJumpForce);         //make dude shoot up
             myCollider.enabled = false;
-            backgroundMusic.Pause();
+            backgroundMusic.Pause();                                    //pause background music (maybe this works?)
             deathSfx.Play();
             
         }
