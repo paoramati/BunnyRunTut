@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class DudeController : MonoBehaviour
 {
+
     private Rigidbody2D myRigidBody;
     private Animator myAnim;
     private Collider2D myCollider;
@@ -16,6 +17,7 @@ public class DudeController : MonoBehaviour
     private int jumpsLeft = 2;
     public AudioSource jumpSfx;
     public AudioSource deathSfx;
+    public AudioSource backgroundMusic;
 
     // Use this for initialization
     void Start()
@@ -38,7 +40,7 @@ public class DudeController : MonoBehaviour
 
         if (dudeHurtTime == -1)
         {
-            if (Input.GetButtonUp("Jump") && jumpsLeft > 0)
+            if ((Input.GetButtonUp("Jump") || Input.GetButtonUp("Fire1")) && jumpsLeft > 0)
             {
                 if (myRigidBody.velocity.y < 0)     //to make second jump ignore negative y vector
                 {
@@ -67,6 +69,7 @@ public class DudeController : MonoBehaviour
         {
             if (Time.time > dudeHurtTime + 3) //i.e. 2 seconds after collision
             {
+                //SceneManager.UnloadSceneAsync("Game");
                 SceneManager.LoadScene("Title");
             }
         }
@@ -94,7 +97,9 @@ public class DudeController : MonoBehaviour
             myRigidBody.velocity = Vector2.zero;    //reset object velocity
             myRigidBody.AddForce(transform.up * dudeJumpForce);    //make dude shoot up
             myCollider.enabled = false;
+            backgroundMusic.Pause();
             deathSfx.Play();
+            
         }
         else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {

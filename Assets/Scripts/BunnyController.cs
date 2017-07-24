@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class BunnyController : MonoBehaviour {
+public class BunnyController : MonoBehaviour
+{
 
     private Rigidbody2D myRigidBody;
     private Animator myAnim;
@@ -16,25 +17,28 @@ public class BunnyController : MonoBehaviour {
     private int jumpsLeft = 2;
     public AudioSource jumpSfx;
     public AudioSource deathSfx;
+    public AudioSource backgroundMusic;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         myRigidBody = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
         myCollider = GetComponent<Collider2D>();
 
         startTime = Time.time;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             SceneManager.LoadScene("Title");
         }
 
-        if (bunnyHurtTime == -1)        
+        if (bunnyHurtTime == -1)
         {
             if (Input.GetButtonUp("Jump") && jumpsLeft > 0)
             {
@@ -44,7 +48,7 @@ public class BunnyController : MonoBehaviour {
                 }
 
                 //making second jump less powerful so bunny doesn't go off top of screen
-                if (jumpsLeft == 1) 
+                if (jumpsLeft == 1)
                 {
                     myRigidBody.AddForce(transform.up * bunnyJumpForce * 0.75f); //if doing second jump, jump has less force
                 }
@@ -65,17 +69,18 @@ public class BunnyController : MonoBehaviour {
         {
             if (Time.time > bunnyHurtTime + 3) //i.e. 2 seconds after collision
             {
+                //SceneManager.UnloadSceneAsync("Game");
                 SceneManager.LoadScene("Title");
             }
         }
 
-		
-	}
+
+    }
 
     //collision detection method
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Enemy") )
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             foreach (PrefabSpawner spawner in FindObjectsOfType<PrefabSpawner>())  //disables newly spawned enemy from moving after collision
             {
@@ -92,8 +97,10 @@ public class BunnyController : MonoBehaviour {
             myRigidBody.velocity = Vector2.zero;    //reset object velocity
             myRigidBody.AddForce(transform.up * bunnyJumpForce);    //make bunny shoot up
             myCollider.enabled = false;
+            backgroundMusic.Pause();
             deathSfx.Play();
-        }  
+
+        }
         else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             jumpsLeft = 2;
