@@ -73,35 +73,33 @@ public class DudeController : MonoBehaviour
                 SceneManager.LoadScene("Title");
             }
         }
-
-
     }
 
-    //collision detection method
+    //Collision detected method for player object collion event
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            foreach (PrefabSpawner spawner in FindObjectsOfType<PrefabSpawner>())  //disables newly spawned enemy from moving after collision
+            foreach (PrefabSpawner spawner in FindObjectsOfType<PrefabSpawner>())   //disables enemy spawner after player collision
             {
                 spawner.enabled = false;
             }
 
-            foreach (MoveLeft moveLefter in FindObjectsOfType<MoveLeft>())          //disables enemy from moving after collision
+            foreach (MoveLeft moveLefter in FindObjectsOfType<MoveLeft>())          //disables object scrolling after player collision
             {
                 moveLefter.enabled = false;
             }
 
             dudeHurtTime = Time.time;
             myAnim.SetBool("dudeHurt", true);
-            myRigidBody.velocity = Vector2.zero;    //reset object velocity
-            myRigidBody.AddForce(transform.up * dudeJumpForce);    //make dude shoot up
+            myRigidBody.velocity = Vector2.zero;                        //reset object velocity
+            myRigidBody.AddForce(transform.up * dudeJumpForce);         //make dude shoot up
             myCollider.enabled = false;
             backgroundMusic.Pause();
             deathSfx.Play();
             
         }
-        else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))        //resets player jumps after they touch the ground
         {
             jumpsLeft = 2;
         }
